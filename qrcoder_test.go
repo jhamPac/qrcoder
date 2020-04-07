@@ -3,6 +3,7 @@ package qrcoder
 import (
 	"bytes"
 	"errors"
+	"fmt"
 	"image/png"
 	"testing"
 )
@@ -41,12 +42,26 @@ func TestGenerateQRCodePropagatesErrors(t *testing.T) {
 }
 
 func TestVersionDeterminesSize(t *testing.T) {
-	buffer := new(bytes.Buffer)
-	_ = Generate(buffer, "some text", Version(1))
+	cases := []struct {
+		version  int
+		expected int
+	}{
+		{1, 21},
+		{2, 25},
+		{6, 41},
+		{7, 45},
+		{14, 73},
+		{40, 177},
+	}
 
-	img, _ := png.Decode(buffer)
-
-	if width := img.Bounds().Dx(); width != 21 {
-		t.Errorf("Version 1, expected 21 but got %d", width)
+	for _, test := range cases {
+		t.Run(fmt.Sprintf("test case for version number %d", test.version), func(t *testing.T) {
+			buffer := new(bytes.Buffer)
+			_ = Generate(buffer, "some text", Version(test.version))
+			img, _ := png.Decode(buffer)
+			if width := img.Bounds().Dx(); width != test.expected {
+				t.Errorf("Version %2d, expected %3d but got %3d", test.version, test.expected, width)
+			}
+		})
 	}
 }
