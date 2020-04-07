@@ -15,12 +15,10 @@ func (e *ErrorWriter) Write(b []byte) (int, error) {
 
 func TestGenerateQRCodeReturnsValue(t *testing.T) {
 	buffer := new(bytes.Buffer)
-	Generate(buffer, "555-1234")
 
-	if buffer.Len() == 0 {
-		t.Error("No QRCode generated")
+	if err := Generate(buffer, "555-1234"); err != nil {
+		t.Errorf("Oops something happened %v:", err)
 	}
-
 }
 
 func TestGenerateQRCodeGeneratesPNG(t *testing.T) {
