@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/jhampac/qrcoder"
@@ -10,8 +11,13 @@ import (
 func main() {
 	fmt.Println("Welcome to QR Coder 3000")
 
-	file, _ := os.Create("qrcode.png")
+	file, err := os.Create("qrcode.png")
+	if err != nil {
+		log.Fatal(err)
+	}
 	defer file.Close()
 
-	qrcoder.Generate(file, "1234567")
+	if err := qrcoder.Generate(file, "1234567"); err != nil {
+		log.Fatal(err)
+	}
 }
