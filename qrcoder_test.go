@@ -8,7 +8,7 @@ import (
 
 func TestGenerateQRCodeReturnsValue(t *testing.T) {
 	buffer := new(bytes.Buffer)
-	GenerateQRCode(buffer, "555-1234")
+	Generate(buffer, "555-1234")
 
 	if buffer.Len() == 0 {
 		t.Error("No QRCode generated")
@@ -18,7 +18,7 @@ func TestGenerateQRCodeReturnsValue(t *testing.T) {
 
 func TestGenerateQRCodeGeneratesPNG(t *testing.T) {
 	buffer := new(bytes.Buffer)
-	GenerateQRCode(buffer, "1234567")
+	Generate(buffer, "1234567")
 	_, err := png.Decode(buffer)
 
 	if err != nil {
