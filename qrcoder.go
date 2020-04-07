@@ -1,15 +1,13 @@
 package qrcoder
 
 import (
-	"bytes"
 	"image"
 	"image/png"
+	"io"
 )
 
 // GenerateQRCode generates a QR code with a given string
-func GenerateQRCode(code string) []byte {
+func GenerateQRCode(w io.Writer, code string) {
 	img := image.NewNRGBA(image.Rect(0, 0, 21, 21))
-	buf := new(bytes.Buffer)
-	_ = png.Encode(buf, img)
-	return buf.Bytes()
+	_ = png.Encode(w, img)
 }
