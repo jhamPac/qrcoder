@@ -56,11 +56,9 @@ func TestVersionDeterminesSize(t *testing.T) {
 
 	for _, test := range cases {
 		t.Run(fmt.Sprintf("test case for version number %d", test.version), func(t *testing.T) {
-			buffer := new(bytes.Buffer)
-			_ = Generate(buffer, "some text", Version(test.version))
-			img, _ := png.Decode(buffer)
-			if width := img.Bounds().Dx(); width != test.expected {
-				t.Errorf("Version %2d, expected %3d but got %3d", test.version, test.expected, width)
+			size := Version(test.version).PatternSize()
+			if size != test.expected {
+				t.Errorf("expected %3d but got %3d", test.expected, size)
 			}
 		})
 	}
